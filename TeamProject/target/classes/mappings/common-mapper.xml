@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 맵퍼파일 생성 후 반드시 sql-map-config.xml 파일에 mapper 등록해줘야 함 -->
+<mapper namespace="commonMapper">
+	<resultMap type="com.spring.biz.vo.BoardVO" id="board">
+		<result column="BOARD_NUM" 			property="boardNum"/>
+		<result column="BOARD_TITLE" 		property="boardTitle"/>
+		<result column="BOARD_CONTENT" 		property="boardContent"/>
+		<result column="BOARD_WRITER" 		property="boardWriter"/>
+		<result column="BOARD_CREATE_DATE" 	property="createDate"/>
+		<result column="BOARD_READ_CNT" 	property="readCnt"/>
+		<result column="BOARD_COMMENT_CNT" 	property="commentCnt"/>
+		<result column="CATEGORY_NUM" 		property="categoryNum"/>
+		<result column="BOARD_GROUP" 		property="boardGroup"/>
+		<result column="BOARD_ORDER" 		property="boardOrder"/>
+		<result column="ROW_NUM" 		property="rowNum"/>
+	</resultMap>
+	
+	<resultMap type="com.spring.biz.vo.BoardCategoryListVO" id="category">
+		<result column="CATEGORY_NUM" 	property="categoryNum"/>
+		<result column="CATEGORY_NAME" 	property="categoryName"/>
+	</resultMap>
+	
+	<resultMap type="com.spring.biz.vo.BoardCommentVO" id="comment">
+		<result column="COMMENT_NUM" 	property="commentNum"/>
+		<result column="BOARD_NUM" 	property="boardNum"/>
+		<result column="COMMENT_CONTENT" 	property="commentContent"/>
+		<result column="COMMENT_CREATE_DATE" 	property="commentCreateDate"/>
+		<result column="COMMENT_WRITER" 	property="commentWriter"/>
+	</resultMap>
+	
+	 <resultMap type="com.spring.biz.vo.CalendarVO" id="calendar">
+		<result column="CAL_TITLE" 	property="calTitle"/>
+		<result column="CAL_STARTDATE" 	property="calStartDate"/>
+		<result column="CAL_ENDDATE" 	property="calEndDate"/>
+		<result column="CAL_COLOR" 	property="calColor"/>
+		<result column="CAL_ID" 	property="calId"/>
+	</resultMap>
+	
+	<!-- 카테고리 이름 찾기  -->
+	<select id="categoryName" resultMap="category">
+		SELECT CATEGORY_NAME
+		FROM BOARD_CATEGORY_LIST
+		WHERE CATEGORY_NUM = #{categoryNum}
+	</select>
+	
+	<!-- 게시판 리스트 띄우기  -->
+	<select id="boardList" resultMap="board">
+	SELECT 
+		      ROW_NUM
+		    , BOARD_NUM
+		    , BOARD_TITLE
+		    , BOARD_WRITER
+		    , BOARD_CREATE_DATE
+		    , BOARD_READ_CNT
+		    , CATEGORY_NUM
+		    , BOARD_COMMENT_CNT
+		    , BOARD_GROUP
+		    , BOARD_ORDER
+		FROM 
+			(
+			    SELECT BOARD_NUM,
+			            BOARD_TITLE,
+			            BOARD_WRITER,
+			            BOARD_CREATE_DATE,
+			            BOARD_READ_CNT,
+			            CATEGORY_NUM,
+			            BOARD_COMMENT_CNT,
+			            BOARD_GROUP,
+			            BOARD_ORDER,
+			            ROWNUM AS ROW_NUM
+                FROM
+                (
+                    SELECT BOARD_NUM,
+			            BOARD_TITLE,
+			            BOARD_WRITER,
+			            TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD') AS BOARD_CREATE_DATE,
+			            BOARD_READ_CNT,
+			            CATEGORY_NUM,
+			            BOARD_COMMENT_CNT,
+			            BOARD_GROUP,
+			            BOARD_ORDER
+			    FROM BOARD
+			    WHERE 1 = 1
+			    <if test="searchValue != null and searchValue != ''">
+			    AND UPPER(${searchKeyword}) LIKE '%' || UPPER(#{searchValue}) || '%' 
+			    </if>
+			    <if test="categoryNum != 4">
+			    AND CATEGORY_NUM = #{categoryNum}
+			    </if>
+			    ORDER BY BOARD_ORDER DESC, BOARD_NUM
+                )
+			)
+		WHERE ROW_NUM BETWEEN #{startIndex} AND #{endIndex}
+	</select>
+
+	<select id="getBoardListCnt" resultType="int">
+		SELECT COUNT(*) AS listCnt FROM BOARD
+		WHERE 1 = 1
+		<if test="categoryNum != 4">
+		AND CATEGORY_NUM = #{categoryNum}
+		</if>
+		<if test="searchValue != null and searchValue != ''">
+		AND UPPER(${searchKeyword}) LIKE '%' || UPPER(#{searchValue}) || '%' 
+		</if>
+	</select>
+	
+	<!-- 게시판 글쓰기 -->
+	<insert id="insertBoard">
+		INSERT INTO BOARD (
+			BOARD_NUM,
+			BOARD_TITLE,
+			BOARD_WRITER,
+			BOARD_CONTENT,
+			CATEGORY_NUM,
+			BOARD_ORDER
+		) VALUES (
+			(SELECT NVL(MAX(BOARD_NUM) + 1, 1) FROM BOARD),
+			#{boardTitle},
+			#{boardWriter},
+			#{boardContent},
+			#{categoryNum},
+			(SELECT NVL(MAX(BOARD_NUM) + 1, 1) FROM BOARD)
+		)
+	</insert>
+	
+	<!-- 메인페이지 공지사항 띄우기 -->
+	<select id="board3" resultMap="board">
+SELECT BOARD_TITLE,
+    BOARD_WRITER,
+    BOARD_CREATE_DATE,
+    BOARD_READ_CNT,
+    CATEGORY_NUM,
+    BOARD_COMMENT_CNT,
+    BOARD_GROUP,
+    BOARD_ORDER,
+    ROWNUM AS ROW_NUM,
+    BOARD_CONTENT,
+    BOARD_NUM
+FROM
+(
+    SELECT BOARD_TITLE,
+			            BOARD_WRITER,
+			            TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD') AS BOARD_CREATE_DATE,
+			            BOARD_READ_CNT,
+			            CATEGORY_NUM,
+			            BOARD_COMMENT_CNT,
+			            BOARD_GROUP,
+			            BOARD_ORDER,
+			            BOARD_CONTENT,
+                        BOARD_NUM
+		FROM BOARD
+        WHERE CATEGORY_NUM = 3
+        ORDER BY BOARD_NUM DESC
+)
+WHERE ROWNUM &lt; 5
+	</select>
+	
+	<!-- 답글 글쓰기 -->
+	<insert id="insertBoard1">
+		INSERT INTO BOARD (
+			BOARD_NUM,
+			BOARD_TITLE,
+			BOARD_WRITER,
+			BOARD_CONTENT,
+			CATEGORY_NUM,
+			BOARD_GROUP,
+			BOARD_ORDER
+		) VALUES (
+			(SELECT NVL(MAX(BOARD_NUM) + 1, 1) FROM BOARD),
+			#{boardTitle},
+			#{boardWriter},
+			#{boardContent},
+			#{categoryNum},
+			#{boardGroup},
+			#{boardGroup}
+		)
+	</insert>
+	
+	<!-- 조회수 증가  -->
+	<update id="readCnt">
+		UPDATE BOARD
+		SET BOARD_READ_CNT = BOARD_READ_CNT+1
+		WHERE BOARD_NUM = #{boardNum}
+	</update>
+	
+	<!-- 상세 보기  -->
+	<select id="detail" resultMap="board">
+		SELECT CATEGORY_NUM,
+				BOARD_TITLE,
+				BOARD_CONTENT,
+				BOARD_WRITER,
+				BOARD_NUM
+		FROM BOARD
+		WHERE BOARD_NUM=#{boardNum}
+	</select>
+	
+	<!-- 글삭제 -->
+	<delete id="deleteBoard">
+		DELETE FROM BOARD
+		WHERE BOARD_NUM = #{boardNum}
+	</delete>
+	
+	<!-- 글수정 -->
+	<update id="updateBoard">
+		UPDATE BOARD
+		SET BOARD_TITLE = #{boardTitle}
+			, BOARD_CONTENT = #{boardContent}
+		WHERE BOARD_NUM = #{boardNum}
+		AND CATEGORY_NUM = #{categoryNum}
+	</update>
+	
+	<!-- 댓글 입력 -->
+	<insert id="insertComment1">
+		INSERT INTO BOARD_COMMENT(
+			COMMENT_NUM,
+			BOARD_NUM,
+			COMMENT_CONTENT,
+			COMMENT_WRITER
+		) VALUES(
+			(SELECT NVL(MAX(COMMENT_NUM) + 1, 1) FROM BOARD_COMMENT),
+			#{boardNum},
+			#{commentContent},
+			#{commentWriter}
+		)
+	</insert>
+	
+	<!-- 댓글리스트 불러오기 -->
+	<select id="selectComment" resultMap="comment">
+		SELECT * FROM BOARD_COMMENT
+		WHERE BOARD_NUM = #{boardNum}
+		ORDER BY COMMENT_CREATE_DATE ASC
+	</select>
+	
+	
+	<!-- 댓글 개수 증가 -->
+	<update id="commentCnt">
+		UPDATE BOARD
+		SET BOARD_COMMENT_CNT = BOARD_COMMENT_CNT + 1
+		WHERE BOARD_NUM = #{boardNum}
+	</update>
+	
+	<!-- 댓글 개수 삭제 -->
+	<update id="commentCnt1">
+		UPDATE BOARD
+		SET BOARD_COMMENT_CNT = BOARD_COMMENT_CNT -1
+		WHERE BOARD_NUM = #{boardNum}
+	</update>
+
+	<!-- 댓글 수정 -->
+	<update id="updateComment">
+		UPDATE BOARD_COMMENT
+		SET COMMENT_CONTENT = #{commentContent}
+		WHERE COMMENT_NUM = #{commentNum}
+	</update>
+
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComment">
+		DELETE BOARD_COMMENT
+		WHERE COMMENT_NUM = #{commentNum}
+	</delete>
+	
+	<!-- 달력 List -->
+	<select id="selectCalendar" resultMap="calendar">
+		SELECT CAL_ID,
+				CAL_TITLE,
+		 		TO_CHAR(CAL_STARTDATE, 'YYYY-MM-DD') AS CAL_STARTDATE,
+		 		TO_CHAR(CAL_ENDDATE+1, 'YYYY-MM-DD') AS CAL_ENDDATE,
+		 		CAL_COLOR
+		FROM CALENDAR
+	</select>
+	
+	<!-- 달력 List -->
+	<select id="selectCalendar1" resultMap="calendar">
+		SELECT CAL_ID,
+				CAL_TITLE,
+		 		TO_CHAR(CAL_STARTDATE, 'DD') AS CAL_STARTDATE,
+		 		TO_CHAR(CAL_ENDDATE, 'DD') AS CAL_ENDDATE,
+		 		CAL_COLOR
+		FROM CALENDAR
+		WHERE 1=1
+    	<if test="calStartDate == '' or calStartDate == null">
+        AND TO_CHAR(CAL_STARTDATE, 'YYYYMM') = TO_CHAR(SYSDATE, 'YYYYMM')
+        </if>
+		<if test="calStartDate != '' and calStartDate != null">
+		AND TO_CHAR(CAL_STARTDATE, 'YYYYMM') = #{calStartDate}
+		</if>
+		ORDER BY CAL_STARTDATE
+	</select>
+	
+	
+	<!-- 일정 입력 -->
+	<insert id="insertCalendar">
+		INSERT INTO CALENDAR(
+			CAL_ID,
+			CAL_TITLE,
+			CAL_STARTDATE,
+			CAL_ENDDATE,
+			CAL_COLOR
+		) VALUES (
+			(SELECT NVL(MAX(CAL_ID) + 1, 1) FROM CALENDAR),
+			#{calTitle},
+			#{calStartDate},
+			#{calEndDate},
+			#{calColor}					
+		) 
+	</insert>
+	
+	<!-- 일정 삭제 -->
+	<delete id="deleteCalendar">
+		DELETE FROM CALENDAR
+		WHERE CAL_ID = #{calId}
+	</delete>
+
+	
+</mapper>

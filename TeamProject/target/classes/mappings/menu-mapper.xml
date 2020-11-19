@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 맵퍼파일 생성 후 반드시 sql-map-config.xml 파일에 mapper 등록해줘야 함 -->
+<mapper namespace="menuMapper">
+	<resultMap type="com.spring.biz.vo.MenuVO" id="menu">
+		<result column="MAIN_NUM" 			property="mainNum"/>	
+		<result column="MAIN_NAME" 			property="mainName"/>	
+		<result column="MEM_GRADE" 			property="memGrade"/>	
+		<result column="MENU_URL" 			property="menuUrl"/>	
+	</resultMap>
+	
+	<resultMap type="com.spring.biz.vo.MenuSideVO" id="menuSide">
+		<result column="SIDE_NUM" 			property="sideNum"/>	
+		<result column="SIDE_NAME" 			property="sideName"/>	
+		<result column="MAIN_NUM" 			property="mainNum"/>	
+		<result column="MENU_URL" 			property="menuUrl"/>
+	</resultMap>
+	
+	<resultMap type="com.spring.biz.vo.MenuSideDetailVO" id="menuSideDetail">
+		<result column="SIDE_DETAIL_NUM" 			property="sideDetailNum"/>	
+		<result column="SIDE_DETAIL_NAME" 			property="sideDetailName"/>	
+		<result column="SIDE_NUM" 					property="sideNum"/>
+		<result column="MAIN_NUM" 					property="mainNum"/>
+		<result column="MENU_URL" 					property="menuUrl"/>
+		<result column="SIDE_NAME" 					property="sideName"/>	
+		<result column="MAIN_NAME" 					property="mainName"/>	
+	</resultMap>
+	
+	<select id="mainMenu" resultMap="menu">
+		SELECT * 
+		FROM MENU_MAIN
+		WHERE MEM_GRADE = #{memGrade} OR MEM_GRADE = 'A'
+		<if test='memGrade.equals("E")'>
+		ORDER BY MEM_GRADE DESC
+		</if>
+	</select>
+	
+	<select id="mainMenuSide" resultMap="menu">
+		SELECT * 
+		FROM MENU_MAIN
+		WHERE MAIN_NUM = #{mainNum}
+	</select>
+	
+	<select id="sideMenu" resultMap="menuSide">
+		SELECT * 
+		FROM MENU_SIDE
+		WHERE MAIN_NUM = #{mainNum}
+	</select>
+	
+	<select id="sideDetailMenu" resultMap="menuSideDetail">
+		SELECT * 
+		FROM MENU_SIDE_DETAIL
+		WHERE MAIN_NUM = #{mainNum}
+		AND SIDE_NUM = #{sideNum}
+	</select>
+	
+	<select id="menuLocation" resultMap="menuSideDetail">
+		SELECT SIDE_DETAIL_NAME
+         , MAIN_NAME
+         , SIDE_NAME
+		FROM MENU_MAIN M , MENU_SIDE S, MENU_SIDE_DETAIL D
+		WHERE M.MAIN_NUM = S.MAIN_NUM
+		AND S.SIDE_NUM = D.SIDE_NUM(+)
+		AND M.MAIN_NUM = #{mainNum}
+		<if test="sideNum != null and sideNum != ''">
+		AND S.SIDE_NUM = #{sideNum}
+		</if>
+		<if test="sideDetailNum != null and sideDetailNum != ''">
+		AND SIDE_DETAIL_NUM = #{sideDetailNum}
+		</if>
+   		ORDER BY S.SIDE_NUM, SIDE_DETAIL_NUM
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+

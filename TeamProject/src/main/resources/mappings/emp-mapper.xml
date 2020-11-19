@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 맵퍼파일 생성 후 반드시 sql-map-config.xml 파일에 mapper 등록해줘야 함 -->
+<mapper namespace="empMapper">
+   <resultMap type="com.spring.biz.vo.LectureVO" id ="lecture">
+	   	<result column="LEC_CODE" 	property="lecCode"/>	
+	   	<result column="COLLEGE_NUM" 	property="collegeNum"/>	
+	   	<result column="LECTURE_NAME" 	property="lectureName"/>	
+	   	<result column="DEP_NO" 	property="depNo"/>	
+	   	<result column="PROF_NUM" 	property="profNum"/>	
+	   	<result column="ASST_NUM" 	property="asstNum"/>	
+	   	<result column="LEC_CREDIT" 	property="lecCredit"/>	
+	   	<result column="REC_YEAR" 	property="recYear"/>	
+	   	<result column="ATTACHMENT" 	property="attachment"/>	
+	   	<result column="PROF_NAME" 	property="profName"/>	
+	   	<result column="DEP_NAME" 	property="depName"/>	
+	   	<result column="COLLEGE_NAME" 	property="collegeName"/>	
+	   	<result column="ASST_NAME" 	property="asstName"/>	
+   </resultMap>
+   <resultMap type="com.spring.biz.vo.CollegeVO" id ="college">
+	   	<result column="COLLEGE_NUM" 	property="collegeNum"/>	
+	   	<result column="COLLEGE_NAME" 	property="collegeName"/>	
+   </resultMap>
+   <resultMap type="com.spring.biz.vo.DepVO" id ="dep">
+	   	<result column="DEP_NO" 	property="depNo"/>	
+	   	<result column="DEP_NAME" 	property="depName"/>	
+	   	<result column="COLLEGE_NUM" 	property="collegeNum"/>	
+   </resultMap>
+   <resultMap type="com.spring.biz.vo.EmpVO" id ="emp">
+	   	<result column="EMP_NO" 	property="empNo"/>	
+	   	<result column="DEP_NO" 	property="depNo"/>	
+	   	<result column="DEP_NAME" 	property="depName"/>	
+	   	<result column="EMP_JOB" 	property="empJob"/>	
+	   	<result column="EMP_NAME" 	property="empName"/>	
+	   	<result column="COLLEGE_NUM" 	property="collegeNum"/>	
+	   	<result column="REG_EMP" 	property="regEmp"/>	
+   </resultMap>
+   <resultMap type="com.spring.biz.vo.TimetableVO" id ="timetable">
+	   	<result column="TT_SEQ" 	property="ttSeq"/>	
+	   	<result column="TT_START_TIME" 	property="ttStartTime"/>	
+	   	<result column="TT_END_TIME" 	property="ttEndTime"/>	
+   </resultMap>
+   <resultMap type="com.spring.biz.vo.FacilityVO" id ="facility">
+	   	<result column="FAC_CODE" 	property="faCode"/>	
+	   	<result column="FAC_LOC" 	property="facLoc"/>	
+	   	<result column="FAC_LOC_DETAIL" 	property="facLocDetail"/>	
+	   	<result column="FAC_NAME" 	property="facName"/>	
+   </resultMap>
+   <resultMap type="com.spring.biz.vo.FacUseListVO" id ="facUse">
+	   	<result column="FAC_USE_NUM" 	property="facUseNum"/>	
+	   	<result column="FAC_CODE" 	property="facCode"/>	
+	   	<result column="FAC_USE_DAY" 	property="facUseDay"/>	
+	   	<result column="TT_SEQ" 	property="ttSeq"/>	
+	   	<result column="MEM_ID" 	property="memId"/>	
+	   	<result column="PURPOSE" 	property="purpose"/>	
+	   	<result column="USER_EMAIL" 	property="userEmail"/>	
+	   	<result column="FAC_NAME" 	property="facName"/>	
+	   	<result column="TT_START_TIME" 	property="ttStartTime"/>	
+	   	<result column="TT_END_TIME" 	property="ttEndTime"/>	
+   </resultMap>
+   <resultMap type="com.spring.biz.vo.EmpInfoVO" id ="empInfo">
+	   	<result column="MEM_ID" 	property="memId"/>	
+	   	<result column="MEM_GENDER" 	property="memGender"/>	
+	   	<result column="MEM_EMAIL" 	property="memEmail"/>	
+	   	<result column="MEM_ADDR" 	property="memAddr"/>	
+	   	<result column="MEM_GRADE" 	property="memGrade"/>	
+	   	<result column="MEM_PHONE" 	property="memPhone"/>	
+	   	<result column="MEM_TEL" 	property="memTel"/>	
+	   	<result column="MEM_ZIP_CODE" 	property="memZipCode"/>	
+	   	<result column="MEM_BIRTHDAY" 	property="memBirthday"/>	
+	   	<result column="MEM_PHOTO" 	property="memPhoto"/>	
+	   	<result column="DEP_NO" 	property="depNo"/>	
+	   	<result column="EMP_JOB" 	property="empJob"/>	
+	   	<result column="EMP_NAME" 	property="empName"/>	
+	   	<result column="COLLEGE_NUM" 	property="collegeNum"/>	
+	   	<result column="COLLEGE_NAME" 	property="collegeName"/>	
+	   	<result column="DEP_NAME" 	property="depName"/>	
+   </resultMap>
+   	
+   	<resultMap type="com.spring.biz.vo.ApplyManagementVO" id="apply">
+		<result column="APPLY_NUM"  		 		property="applyNum" />
+		<result column="STU_NUM"   					property="stuNum" />
+		<result column="APPLY_TYPE"    				property="applyType" />
+		<result column="MAJOR_CONTENT"   			property="majorContent" />
+		<result column="MAJOR_CREATE_DATE" 			property="majorCreateDate" />
+		<result column="PROCESSING_DATE"    		property="dmajorCollegeNum" />
+	
+		<result column="MAJOR_COLLEGE_NUM"   		property="majorCollegeNum" />
+		<result column="MAJOR_DEPNO"    			property="majorDepno" />
+	
+		<result column="DMAJOR_DEPNO"    			property="dmajorDepno" />
+		<result column="DMAJOR_COLLEGE_NUM"   		property="dmajorCollegeNum" />
+		
+		<result column="FROM_COLLEGE_NUM"    		property="fromCollegeNum" />
+		<result column="FROM_DEP_NO"   				property="fromDepNo" />
+		
+		<result column="MAJOR_STATUS"    		property="majorStatus" />
+		<result column="COLLEGE_NAME"  			property="collegeName" />
+		<result column="DEP_NAME" 		 		property="depName" />	
+		<result column="MEM_STATUS" 			property="memStatus" />
+		<result column="STU_YEAR" 				property="stuYear" />
+		<result column="STU_NAME" 				property="stuName" />
+		<result column="COLLEGE_NAME2" 			property="collegeName2" />
+		<result column="DEP_NAME2"   			property="depName2" />
+		<result column="COLLEGE_NAME21" 		property="collegeName21" />
+		<result column="DEP_NAME21"   			property="depName21" />
+		<result column="COLLEGE_NUM" 			property="collegeNum"/>	
+		<result column="DEP_NO" 				property="depNo"/>	
+	</resultMap>
+   
+	
+   	<resultMap type="com.spring.biz.vo.ProbationVO" id="probation">
+		<result column="PROB_NUM"				property="probNum" />
+		<result column="STU_NUM"				property="stuNum" />
+		<result column="PROB_DATE"				property="probDate" />
+		<result column="SEM_CODE"				property="semCode" />
+		<result column="PROB_REASON"			property="probReason" />
+	</resultMap>
+	
+   	<resultMap type="com.spring.biz.vo.ExpelVO" id="expel">
+		<result column="EXPEL_NUM"				property="expelNum" />
+		<result column="STU_NUM"				property="stuNum" />
+		<result column="EXPEL_DATE"				property="expelDate" />
+		<result column="EXPEL_REASON"				property="expelReason" />
+	</resultMap>
+   	
+   <delete id="deleteFacUse">
+   DELETE FACILITY_USE_LIST
+   WHERE FAC_USE_NUM = #{facUseNum}
+   </delete>
+   
+   <select id="selectFacUseLista" resultMap="facUse">
+   SELECT FAC_USE_NUM
+   		, FAC_CODE
+   		, TO_CHAR(FAC_USE_DAY, 'YYYY.MM.DD') AS FAC_USE_DAY
+   		, TT_SEQ
+   		, MEM_ID
+   		, PURPOSE
+   		, USER_EMAIL
+   		, (SELECT FAC_NAME FROM FACILITY F WHERE F.FAC_CODE = U.FAC_CODE) AS FAC_NAME
+   		, (SELECT TT_START_TIME FROM TIMETABLE WHERE TT_SEQ = U.TT_SEQ) AS TT_START_TIME
+   		, (SELECT TT_END_TIME FROM TIMETABLE WHERE TT_SEQ = U.TT_SEQ) AS TT_END_TIME
+   	FROM FACILITY_USE_LIST U
+   	WHERE 1 = 1
+   	<if test="fromDate != null and fromDate != ''">
+   	AND TO_CHAR(FAC_USE_DAY, 'YYYYMMDD') BETWEEN #{fromDate} AND #{toDate}
+   	</if>
+   <if test="facCodeList != null">
+   	AND FAC_CODE IN
+   		<foreach collection="facCodeList" item="facCode" separator="," open="(" close=")">
+   		#{facCode}
+   		</foreach>
+   	</if>
+   	<if test="memId != 0">
+   	AND MEM_ID = #{memId}
+   	</if>
+   	ORDER BY FAC_USE_DAY DESC
+   </select>
+   
+   <select id="selectEmpInfo" resultMap="empInfo">
+   SELECT MEM_ID
+   		, MEM_GENDER
+   		, MEM_EMAIL
+   		, MEM_ADDR
+   		, MEM_GRADE
+   		, MEM_PHONE
+   		, MEM_TEL
+   		, MEM_ZIP_CODE
+   		, MEM_BIRTHDAY
+   		, MEM_PHOTO
+   		, DEP_NO
+   		, EMP_JOB
+   		, EMP_NAME
+   		, COLLEGE_NUM
+   		, COLLEGE_NAME
+   		, DEP_NAME
+   	FROM EMP_INFO E , MEMBER_INFO M
+   	WHERE E.EMP_NO = M.MEM_ID
+   </select>
+   
+   
+   <insert id="insertLecTime" parameterType="java.util.List" >
+		<foreach collection="list" item="item" open="INSERT ALL" index = "index" close="SELECT * FROM DUAL" separator=" ">
+		INTO LEC_TIME (
+			LEC_TT_CODE
+			, LEC_WEEK
+			, TT_SEQ
+			, LEC_TIME_NUM
+			, FAC_CODE ) VALUES (
+			#{item.lecTtCode}
+			, #{item.lecWeek}
+			, #{item.ttSeq}
+			, (SELECT NVL(MAX(LEC_TIME_NUM) + 1, 1) FROM LEC_TIME) + #{index}
+			, #{item.facCode}
+			)
+		</foreach>
+	</insert>
+   
+   
+   <insert id="insertLecTT">
+   INSERT INTO LEC_TT(
+   			LEC_TT_CODE
+   			, LEC_CODE
+   			, STU_MAX_NUM
+   			, SEM_CODE
+   		)VALUES(
+   			#{lecTtCode}
+   			, #{lecCode}
+   			, #{stuMaxNum}
+   			, #{semCode}
+   		)
+   </insert>
+   
+   <select id="selectFacDetail" resultMap="facility">
+ 	SELECT FAC_CODE, FAC_LOC, FAC_LOC_DETAIL, FAC_NAME
+	FROM FACILITY 
+	WHERE FAC_LOC = #{facLoc}
+	ORDER BY FAC_LOC
+   </select>
+   
+   <select id="selectFacLoc" resultMap="facility">
+	SELECT DISTINCT FAC_LOC
+	FROM FACILITY
+	ORDER BY FAC_LOC
+   </select>
+   
+   <insert id="insertLec">
+   INSERT INTO LECTURE_INFO(
+   		LEC_CODE
+   		, COLLEGE_NUM
+   		, LECTURE_NAME
+   		, DEP_NO
+   		, PROF_NUM
+   		, ASST_NUM
+   		, LEC_CREDIT
+   		, REC_YEAR
+   		, REG_EMP
+   		 <if test="attachment != null and attachment != ''">
+   		, ATTACHMENT
+   		</if>
+   )VALUES(
+      (TO_CHAR(#{collegeNum},'FM00')||TO_CHAR(#{depNo},'FM00')||TO_CHAR((SELECT COUNT(*) + 1 FROM LECTURE_INFO WHERE SUBSTR(LEC_CODE, 1, 4) = TO_CHAR(#{collegeNum},'FM00')||TO_CHAR(#{depNo},'FM00')),'FM00'))
+      , #{collegeNum}
+      , #{lectureName}
+      , #{depNo}
+      , #{profNum}
+      , #{asstNum}
+      , #{lecCredit}
+      , #{recYear}
+      , #{regEmp}
+      <if test="attachment != null and attachment != ''">
+      , #{attachment}
+      </if>
+   )
+   </insert>
+   
+   <select id = "selectColList" resultMap="college">
+   SELECT *
+   FROM COLLEGE_INFO
+   ORDER BY COLLEGE_NUM
+   </select>
+   
+   <select id = "selectDepList" resultMap="dep">
+   SELECT DEP_NO, DEP_NAME
+   FROM DEP_INFO
+   <if test="collegeNum != null and collegeNum != ''">
+   WHERE COLLEGE_NUM = #{collegeNum}
+   </if>
+   </select>
+   
+   <select id = "selectEmpList" resultMap="emp">
+   SELECT EMP_NO
+   		, (SELECT DEP_NAME FROM DEP_INFO WHERE DEP_NO = E.DEP_NO) AS DEP_NAME
+   		, EMP_NAME
+   		, EMP_JOB
+   	FROM EMP_INFO E
+   	WHERE 1=1
+   <if test="empJob != null and empJob != ''">
+   AND EMP_JOB = #{empJob}
+   </if>
+   <if test="empName != null and empName != ''">
+   AND EMP_NAME LIKE '%'||#{empName}||'%'
+   </if>
+   </select>
+   
+   <select id="selectLecList" resultMap="lecture">
+   SELECT LEC_CODE
+   		, COLLEGE_NUM
+   		, DEP_NO
+   		, PROF_NUM
+   		, ASST_NUM
+   		, LEC_CREDIT
+   		, REC_YEAR
+   		, LECTURE_NAME
+   		, ATTACHMENT
+   		, (SELECT EMP_NAME FROM EMP_INFO WHERE PROF_NUM = EMP_NO) AS PROF_NAME
+   		, (SELECT EMP_NAME FROM EMP_INFO WHERE ASST_NUM = EMP_NO) AS ASST_NAME
+   		, (SELECT DEP_NAME FROM DEP_INFO WHERE DEP_NO = L.DEP_NO) AS DEP_NAME
+   		, (SELECT COLLEGE_NAME FROM COLLEGE_INFO WHERE COLLEGE_NUM = L.COLLEGE_NUM) AS COLLEGE_NAME
+   FROM LECTURE_INFO L
+   WHERE  1 = 1
+   <if test="collegeNum != null and collegeNum != ''">
+   AND COLLEGE_NUM = #{collegeNum}
+   </if>
+   <if test="depNo != null and depNo != ''">
+   AND DEP_NO = #{depNo}
+   </if>
+   <if test="lectureName != null and lectureName != ''">
+   AND LECTURE_NAME LIKE '%'||#{lectureName}||'%'
+   </if>
+   </select>
+   
+   <delete id="deleteLec">
+   DELETE LECTURE_INFO
+   WHERE LEC_CODE = #{lecCode}
+   </delete>
+   
+   <select id="selectLec" resultMap="lecture">
+   SELECT LEC_CODE
+   		, COLLEGE_NUM
+   		, DEP_NO
+   		, PROF_NUM
+   		, ASST_NUM
+   		, LEC_CREDIT
+   		, REC_YEAR
+   		, LECTURE_NAME
+   		, ATTACHMENT
+   		, (SELECT EMP_NAME FROM EMP_INFO WHERE PROF_NUM = EMP_NO) AS PROF_NAME
+   		, (SELECT EMP_NAME FROM EMP_INFO WHERE ASST_NUM = EMP_NO) AS ASST_NAME
+   		, (SELECT DEP_NAME FROM DEP_INFO WHERE DEP_NO = L.DEP_NO) AS DEP_NAME
+   		, (SELECT COLLEGE_NAME FROM COLLEGE_INFO WHERE COLLEGE_NUM = L.COLLEGE_NUM) AS COLLEGE_NAME
+   	FROM LECTURE_INFO L
+   	WHERE LEC_CODE = #{lecCode}
+   </select>
+   
+   <update id="updateLectureInfo">
+   UPDATE LECTURE_INFO
+   SET COLLEGE_NUM = #{collegeNum}
+   		, DEP_NO = #{depNo}
+   		, PROF_NUM = #{profNum}
+   		, ASST_NUM = #{asstNum}
+   		, LEC_CREDIT = #{lecCredit}
+   		, REC_YEAR = #{recYear}
+   		, LECTURE_NAME = #{lectureName}
+      <if test="attachment != null and attachment != ''">
+   		, ATTACHMENT = #{attachment}
+   		</if>
+   	WHERE LEC_CODE = #{lecCode}
+   </update>
+   
+   
+   <select id= "selectTimetable" resultMap="timetable">
+   	SELECT TT_SEQ
+   		, TT_START_TIME
+   		, TT_END_TIME
+   FROM TIMETABLE
+   </select>
+   
+   <select id= "selectFacUseList" resultMap="facUse">
+   SELECT TT_SEQ
+   FROM FACILITY_USE_LIST
+   WHERE TO_CHAR(FAC_USE_DAY, 'YYYY.MM.DD')= #{facUseDay}
+   AND FAC_CODE = #{facCode}
+   </select>
+   
+   <insert id="insertFacUse">
+   INSERT INTO FACILITY_USE_LIST(
+   		FAC_USE_NUM
+   		, FAC_CODE
+   		, FAC_USE_DAY
+   		, TT_SEQ
+   		, MEM_ID
+   		, PURPOSE
+   		, USER_EMAIL
+   )VALUES(
+   		(SELECT NVL(MAX(FAC_USE_NUM) + 1 , 1) FROM FACILITY_USE_LIST)
+   		, #{facCode}
+   		, TO_DATE(TO_NUMBER(SUBSTR(#{facUseDay},1,4)||SUBSTR(#{facUseDay},6,2)||SUBSTR(#{facUseDay},9,2)), 'YYYYMMDD')
+   		, #{ttSeq}
+   		, #{memId}
+   		, #{purpose}
+   		, #{userEmail}
+   )
+   </insert>
+   
+   <select id="selectMajorList" resultMap="apply">
+   SELECT APPLY_NUM
+   , A.STU_NUM
+   , APPLY_TYPE
+   , MAJOR_CONTENT
+   , COLLEGE_NUM
+   , DEP_NO
+   ,(SELECT DEP_NAME FROM DEP_INFO WHERE DEP_NO = A.FROM_DEP_NO) AS DEP_NAME
+   ,(SELECT COLLEGE_NAME FROM COLLEGE_INFO WHERE COLLEGE_NUM = A.FROM_COLLEGE_NUM) AS COLLEGE_NAME
+   ,(SELECT DEP_NAME FROM DEP_INFO WHERE DEP_NO = A.MAJOR_DEPNO) AS DEP_NAME2
+   ,(SELECT COLLEGE_NAME FROM COLLEGE_INFO WHERE COLLEGE_NUM = A.MAJOR_COLLEGE_NUM) AS COLLEGE_NAME2
+   ,(SELECT DEP_NAME FROM DEP_INFO WHERE DEP_NO = A.DMAJOR_DEPNO) AS DEP_NAME21
+   ,(SELECT COLLEGE_NAME FROM COLLEGE_INFO WHERE COLLEGE_NUM = A.DMAJOR_COLLEGE_NUM) AS COLLEGE_NAME21
+   , MAJOR_STATUS, (SELECT MEM_STATUS FROM STATUS_INFO WHERE STATUS_NUM = S.STATUS_NUM) AS MEM_STATUS
+   , STU_YEAR
+   , STU_NAME
+   , MAJOR_DEPNO
+   , MAJOR_COLLEGE_NUM
+   , DMAJOR_DEPNO
+   , DMAJOR_COLLEGE_NUM
+   , TO_CHAR(MAJOR_CREATE_DATE, 'YYYY-MM-DD') AS MAJOR_CREATE_DATE
+   FROM APPLY_MANAGEMENT A , STUDENT_INFO S
+   WHERE A.STU_NUM = S.STU_NUM  
+   </select>
+
+<!--관리자가 신청 승인 -->
+
+
+	<update id="updateApplyStudent">
+		UPDATE APPLY_MANAGEMENT
+		SET
+		MAJOR_STATUS = 'Y'
+		, PROCESSING_DATE = TO_CHAR(SYSDATE,'YYYY-MM-DD')
+		WHERE STU_NUM = #{stuNum}
+		AND APPLY_TYPE = #{applyType} 
+		</update>
+
+   <insert id="insertProbation">
+   INSERT INTO PROBATION(PROB_NUM
+				, STU_NUM
+				, SEM_CODE
+				, PROB_REASON)VALUES(
+					(SELECT NVL(MAX(PROB_NUM) + 1, 1) FROM PROBATION)
+					, #{stuNum}
+					, #{semCode}
+					, #{probReason}
+				)	
+   </insert>
+   <insert id="insertExpel">
+   INSERT INTO EXPEL(EXPEL_NUM
+				, STU_NUM
+				, EXPEL_REASON)VALUES(
+					(SELECT NVL(MAX(EXPEL_NUM) + 1, 1) FROM EXPEL)
+					, #{stuNum}
+					, #{expelReason}
+				)	
+   </insert>
+   
+   <update id="updateStudentExpel">
+   UPDATE STUDENT_INFO
+   SET STATUS_NUM = 4
+   WHERE STU_NUM = #{stuNum}
+   </update>
+   
+</mapper>
+
+
+
+
+
+

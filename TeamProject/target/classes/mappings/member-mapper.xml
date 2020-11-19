@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 맵퍼파일 생성 후 반드시 sql-map-config.xml 파일에 mapper 등록해줘야 함 -->
+<mapper namespace="memberMapper">
+	<resultMap type="com.spring.biz.vo.MemberVO" id="member">
+		<result column="MEM_ID" 	property="memId"/>	
+		<result column="MEM_PASSWORD" 	property="memPassword"/>	
+		<result column="MEM_GENDER" 	property="memGender"/>	
+		<result column="MEM_EMAIL" 	property="memEmail"/>	
+		<result column="MEM_ADDR" 	property="memAddr"/>	
+		<result column="MEM_GRADE" 	property="memGrade"/>	
+		<result column="MEM_PHONE" 	property="memPhone"/>	
+		<result column="MEM_BIRTHDAY" 	property="memBirthday"/>	
+		<result column="MEM_ZIP_CODE" 	property="memZipCode"/>	
+		<result column="MEM_TEL" 	property="memTel"/>	
+		<result column="MEM_PHOTO" 	property="memPhoto"/>	
+	</resultMap>
+	<resultMap type="com.spring.biz.vo.StudentVO" id="student">
+		<result column="STU_NUM" 	property="stuNum"/>	
+		<result column="DEP_NO" 	property="depNo"/>	
+		<result column="DEP_NAME" 	property="depName"/>
+		<result column="COLLEGE_NUM" 	property="collegeNum"/>
+		<result column="COLLEGE_NAME" 	property="collegeName"/>
+		<result column="DEP_NO2" 	property="depNo2"/>	
+		<result column="STATUS_NUM" 	property="statusNum"/>
+		<result column="MEM_STATUS" 	property="memStatus"/>
+		<result column="STU_YEAR" 	property="stuYear"/>
+		<result column="STU_NAME" 	property="stuName"/>
+	</resultMap>
+	<resultMap type="com.spring.biz.vo.MyInfoVO" id="myInfo">
+		<result column="MEM_ID" 	property="memId"/>	
+		<result column="MEM_GENDER" 	property="memGender"/>	
+		<result column="MEM_EMAIL" 	property="memEmail"/>	
+		<result column="MEM_ADDR" 	property="memAddr"/>	
+		<result column="MEM_GRADE" 	property="memGrade"/>	
+		<result column="MEM_PHONE" 	property="memPhone"/>	
+		<result column="MEM_BIRTHDAY" 	property="memBirthday"/>	
+		<result column="MEM_ZIP_CODE" 	property="memZipCode"/>	
+		<result column="MEM_TEL" 	property="memTel"/>	
+		<result column="MEM_PHOTO" 	property="memPhoto"/>
+		<result column="STU_NUM" 	property="stuNum"/>	
+		<result column="DEP_NO" 	property="depNo"/>	
+		<result column="DEP_NAME" 	property="depName"/>
+		<result column="COLLEGE_NUM" 	property="collegeNum"/>
+		<result column="COLLEGE_NAME" 	property="collegeName"/>
+		<result column="DEP_NO2" 	property="depNo2"/>
+		<result column="DEP_NAME2" 	property="depName2"/>
+		<result column="STATUS_NUM" 	property="statusNum"/>
+		<result column="MEM_STATUS" 	property="memStatus"/>
+		<result column="STU_YEAR" 	property="stuYear"/>
+		<result column="STU_NAME" 	property="stuName"/>
+	</resultMap>
+	
+	<resultMap type="com.spring.biz.vo.EmpInfoVO" id ="empInfo">
+	   	<result column="MEM_ID" 	property="memId"/>	
+	   	<result column="MEM_GENDER" 	property="memGender"/>	
+	   	<result column="MEM_EMAIL" 	property="memEmail"/>	
+	   	<result column="MEM_ADDR" 	property="memAddr"/>	
+	   	<result column="MEM_GRADE" 	property="memGrade"/>	
+	   	<result column="MEM_PHONE" 	property="memPhone"/>	
+	   	<result column="MEM_TEL" 	property="memTel"/>	
+	   	<result column="MEM_ZIP_CODE" 	property="memZipCode"/>	
+	   	<result column="MEM_BIRTHDAY" 	property="memBirthday"/>	
+	   	<result column="MEM_PHOTO" 	property="memPhoto"/>	
+	   	<result column="DEP_NO" 	property="depNo"/>
+	   	<result column="EMP_NO" 	property="empNo"/>
+	   	<result column="EMP_JOB" 	property="empJob"/>	
+	   	<result column="EMP_NAME" 	property="empName"/>	
+	   	<result column="COLLEGE_NUM" 	property="collegeNum"/>	
+	   	<result column="COLLEGE_NAME" 	property="collegeName"/>	
+	   	<result column="DEP_NAME" 	property="depName"/>	
+   </resultMap>
+	
+	<select id="selectMemberGrade" resultType="String">
+	SELECT MEM_GRADE
+	FROM MEMBER_INFO
+	WHERE MEM_ID = #{memId}
+	</select>
+	
+	<!-- 로그인 -->
+	<select id="loginMember" resultMap="member">
+	SELECT MEM_ID
+		, MEM_GENDER
+		, MEM_EMAIL
+		, MEM_ADDR
+		, MEM_GRADE
+		, MEM_PHONE
+		, TO_CHAR(MEM_BIRTHDAY, 'YYYY.MM.DD') AS MEM_BIRTHDAY
+		, MEM_ZIP_CODE
+		, MEM_TEL
+		, MEM_PHOTO
+	FROM MEMBER_INFO
+	WHERE MEM_ID = #{memId}
+	AND MEM_PASSWORD = #{memPassword}
+	</select>
+	
+	<select id="selectMemberName" resultType="string">
+	<if test='memGrade == "S"'>
+	SELECT STU_NAME
+	FROM STUDENT_INFO
+	WHERE STU_NUM = #{memId}
+	</if>
+	<if test='memGrade == "E"'>
+	SELECT EMP_NAME
+	FROM EMP_INFO
+	WHERE EMP_NO = #{memId}
+	</if>
+	</select>
+	
+	<!-- 내정보(학생) -->
+	<select id="studentMyInfo" resultMap="myInfo">
+			SELECT S.STU_NUM
+			, (SELECT DEP_NAME FROM DEP_INFO WHERE DEP_NO = S.DEP_NO) AS DEP_NAME
+			, (SELECT DEP_NAME FROM DEP_INFO WHERE DEP_NO = S.DEP_NO2) AS DEP_NAME2
+			, (SELECT MEM_STATUS FROM STATUS_INFO WHERE STATUS_NUM = S.STATUS_NUM) AS MEM_STATUS
+			, STATUS_NUM
+			, STU_YEAR
+			, STU_NAME
+			, (SELECT COLLEGE_NAME FROM COLLEGE_INFO WHERE COLLEGE_NUM = S.COLLEGE_NUM) AS COLLEGE_NAME
+			, MEM_GENDER
+			, MEM_EMAIL
+			, MEM_ADDR
+			, MEM_GRADE
+			, MEM_PHONE
+			, COLLEGE_NUM
+			, DEP_NO
+			, TO_CHAR(MEM_BIRTHDAY, 'YYYY.MM.DD') AS MEM_BIRTHDAY
+			, MEM_ZIP_CODE
+			, MEM_TEL
+			, MEM_PHOTO
+		FROM STUDENT_INFO S, MEMBER_INFO M
+		WHERE STU_NUM = #{stuNum}
+		AND MEM_ID = #{stuNum}
+		AND S.STU_NUM = M.MEM_ID
+	</select>
+	
+	<!-- 내정보(교수) -->
+	<select id="adminMyInfo" resultMap="empInfo">
+		SELECT EMP_NAME
+        , (SELECT COLLEGE_NAME FROM COLLEGE_INFO WHERE COLLEGE_NUM = E.COLLEGE_NUM) AS COLLEGE_NAME
+        , EMP_NO
+        , (SELECT DEP_NAME FROM DEP_INFO WHERE DEP_NO = E.DEP_NO) AS DEP_NAME
+        , EMP_JOB
+        , MEM_GENDER
+        , MEM_EMAIL
+        , TO_CHAR(MEM_BIRTHDAY, 'YYYY.MM.DD') AS MEM_BIRTHDAY
+        , MEM_TEL
+        , MEM_PHONE
+        , MEM_ZIP_CODE
+        , MEM_ADDR
+        , MEM_ID
+        , MEM_GRADE
+        , MEM_PHOTO
+        , DEP_NO
+        , COLLEGE_NUM
+        FROM MEMBER_INFO M, EMP_INFO E
+        WHERE M.MEM_ID = E.EMP_NO
+        AND EMP_NO = #{empNo}
+        AND MEM_ID = #{empNo}
+	</select>
+	
+	<!-- 내정보 수정 -->
+	<update id="updateMyInfo">
+	UPDATE MEMBER_INFO
+	SET MEM_EMAIL = #{memEmail}
+		, MEM_TEL = #{memTel}
+		, MEM_PHONE = #{memPhone}
+		, MEM_ZIP_CODE = #{memZipCode}
+		, MEM_ADDR = #{memAddr}
+	WHERE MEM_ID = #{memId}
+	</update>
+	
+	<select id="passwordConfirm" resultMap="member">
+		SELECT MEM_ID
+			 , MEM_PASSWORD
+		FROM MEMBER_INFO
+		WHERE MEM_PASSWORD = #{memPassword}
+		AND MEM_ID = #{memId}
+	</select>	
+	
+	<update id="changePassword">
+		UPDATE MEMBER_INFO
+		SET
+		MEM_PASSWORD = #{memPassword}
+		WHERE MEM_ID = #{memId}
+	</update>
+	
+	
+	<!--모달창 학생정보 -->
+	<select id="majorStudentInfo" resultMap="myInfo">
+		SELECT S.STU_NUM
+		, (SELECT DEP_NAME FROM DEP_INFO WHERE DEP_NO = S.DEP_NO) AS DEP_NAME
+		, (SELECT DEP_NAME FROM DEP_INFO WHERE DEP_NO = S.DEP_NO2) AS DEP_NAME2
+		, (SELECT MEM_STATUS FROM STATUS_INFO WHERE STATUS_NUM = S.STATUS_NUM) AS MEM_STATUS
+		, STATUS_NUM
+		, STU_YEAR
+		, STU_NAME
+		, (SELECT COLLEGE_NAME FROM COLLEGE_INFO WHERE COLLEGE_NUM = S.COLLEGE_NUM) AS COLLEGE_NAME
+		, MEM_GENDER
+		, MEM_EMAIL
+		, MEM_ADDR
+		, MEM_GRADE
+		, MEM_PHONE
+		, COLLEGE_NUM
+		, DEP_NO
+		, TO_CHAR(MEM_BIRTHDAY, 'YYYY.MM.DD') AS MEM_BIRTHDAY
+		, MEM_ZIP_CODE
+		, MEM_TEL
+		, MEM_PHOTO
+	FROM STUDENT_INFO S , MEMBER_INFO M
+	WHERE S.STU_NUM = M.MEM_ID
+	AND STU_NUM = #{stuNum}
+	</select>
+	
+</mapper>

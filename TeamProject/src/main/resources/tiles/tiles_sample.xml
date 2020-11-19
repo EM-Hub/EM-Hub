@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<!-- main화면 -->
+	<definition name="baseLayout" template="/WEB-INF/view/main/mainPage.jsp">
+		<put-attribute name="title" value="KH대학교"/>
+		<put-attribute name="topMenu" value="/WEB-INF/view/menu/topMenu.jsp"/>
+		<put-attribute name="dropMenu" value="/WEB-INF/view/menu/dropMenu.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/view/main/mainContent.jsp"/>
+		<put-attribute name="modal" value="/WEB-INF/view/menu/modal.jsp"/>
+	</definition>
+	<!-- 메뉴 클릭시 화면구성 -->
+	<definition name="baseLayout2" template="/WEB-INF/view/main/mainPage2.jsp">
+		<put-attribute name="title" value="KH대학교"/>
+		<put-attribute name="topMenu" value="/WEB-INF/view/menu/topMenu.jsp"/>
+		<put-attribute name="dropMenu" value="/WEB-INF/view/menu/dropMenu.jsp"/>
+		<put-attribute name="sideMenu" value="/WEB-INF/view/menu/student_side.jsp"/>
+		<put-attribute name="back" value="/WEB-INF/view/main/backImage.jsp"/>
+		<put-attribute name="bodyTitle" value="/WEB-INF/view/menu/bodyTitle.jsp"/>
+		<put-attribute name="body" value=""/>
+		<put-attribute name="modal" value="/WEB-INF/view/menu/modal.jsp"/>
+	</definition>
+	
+	<definition name="main/*" extends="baseLayout">
+		<put-attribute name="body" value="/WEB-INF/view/main/{1}.jsp" />
+	</definition>
+	
+	<definition name="student/*" extends="baseLayout2">
+		<put-attribute name="body" value="/WEB-INF/view/student/{1}.jsp"/>
+	</definition>
+	
+	<definition name="professor/*" extends="baseLayout2">
+		<put-attribute name="sideMenu" value="/WEB-INF/view/menu/professor_side.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/view/professor/{1}.jsp"/>
+	</definition>
+	
+	<definition name="admin/*" extends="baseLayout2">
+		<put-attribute name="body" value="/WEB-INF/view/admin/{1}.jsp"/>
+	</definition>
+	
+	<definition name="emp/*" extends="baseLayout2">
+		<put-attribute name="sideMenu" value="/WEB-INF/view/menu/student_side.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/view/emp/{1}.jsp"/>
+	</definition>
+	
+	<definition name="common/*" extends="baseLayout2">
+		<put-attribute name="sideMenu" value="/WEB-INF/view/menu/student_side.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/view/common/{1}.jsp"/>
+	</definition>
+	
+	
+	
+	
+</tiles-definitions>
+
+
+
+
+
+
+
+
+
